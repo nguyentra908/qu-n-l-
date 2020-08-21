@@ -1,0 +1,13 @@
+image: asto/phpcs-with-git:php53
+clone:
+  lfs: false
+pipelines:
+  default:
+  - step:
+      name: php-cs
+      script:
+      - /setup_env.sh
+#     run check style
+      - phpcs -p -s -v --warning-severity=0 --standard=phpcs.xml --colors --report-width=200  --ignore-annotations --report=full,code,summary $(git diff origin/master  --name-only --diff-filter=ARCM | grep -E "\.php") bitbucket-pipelines.yml
+#      check php syntax
+      - git diff origin/master  --name-only --diff-filter=ARCM | grep -E "\.php" |xargs -n1 php -l
